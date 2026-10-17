@@ -1,0 +1,8 @@
+# 本地部署配置（仓库名，不上传）
+.deploy-config
+.deploy-token
+
+# 系统垃圾文件
+Thumbs.db
+.DS_Store
+desktop.ini
