@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Zane · 个人主页</title>
+  <meta name="description" content="关于我，和我关于恋爱的想法" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌸%3C/text%3E%3C/svg%3E" />
+
+  <!-- 微信/社交分享卡片：部署后把 og:image 换成一张 ≥300x200 的图片地址（图床或仓库内） -->
+  <meta property="og:title" content="Zane · 个人主页" />
+  <meta property="og:description" content="关于我，和我关于恋爱的想法" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="" />
+  <meta property="og:image" content="" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="avatar" id="avatar"></div>
+      <h1 class="site-title" id="siteTitle"></h1>
+      <p class="site-subtitle" id="siteSubtitle"></p>
+    </header>
+
+    <nav class="tab-bar" id="tabBar" role="tablist"></nav>
+
+    <main class="panels" id="panels"></main>
+
+    <footer class="site-footer" id="siteFooter"></footer>
+  </div>
+
+  <!-- 密码弹窗 -->
+  <div class="modal-backdrop" id="modal" hidden>
+    <div class="modal">
+      <h2 class="modal-title">🔒 需要密码</h2>
+      <p class="modal-hint">这部分是我的私密想法，输入密码查看</p>
+      <input type="password" id="pwInput" placeholder="请输入密码" autocomplete="off" />
+      <p class="modal-error" id="pwError" hidden>密码不对，再试一次</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="pwCancel" type="button">取消</button>
+        <button class="btn btn-primary" id="pwOk" type="button">解锁</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/content.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
