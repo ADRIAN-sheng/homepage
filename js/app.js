@@ -110,6 +110,13 @@
     } else if (block.type === "quote") {
       el.classList.add("block-quote");
       el.innerHTML = renderInline(block.text || "");
+    } else if (block.type === "link") {
+      el.classList.add("block-link");
+      const a = document.createElement("a");
+      a.href = block.href || "#";
+      a.textContent = block.text || block.href || "链接";
+      if (block.newTab) { a.target = "_blank"; a.rel = "noopener"; }
+      el.appendChild(a);
     } else if (block.type === "image") {
       if (!block.url) return null;      // 没填 url 就整块不渲染
       el.classList.add("block-image");
