@@ -127,6 +127,19 @@ body {
   line-height: 1.8;
 }
 
+.block-link { text-align: center; margin-top: 6px; }
+.block-link a {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 11px 28px;
+  border-radius: 999px;
+  transition: filter .2s ease;
+}
+.block-link a:hover { filter: brightness(1.06); }
+
 .block-list ul { list-style: none; }
 .block-list li {
   padding: 7px 0;
