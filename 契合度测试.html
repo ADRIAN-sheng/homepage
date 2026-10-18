@@ -1,31 +1,420 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>契合度测试</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你和TA的契合小测试</title>
 <style>
-  :root { --accent:#d66b7c; --text:#2b2b2b; --muted:#8a8a8a; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body {
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-    color:var(--text); background:linear-gradient(160deg,#f7f1ea,#eef3f7);
-    min-height:100vh; display:flex; align-items:center; justify-content:center;
-    padding:24px; line-height:1.7;
+  :root{
+    --cream:#fdf6ef; --cream2:#fbeee2; --card:#fffaf5;
+    --peach:#ffb38a; --peach-d:#f08a5d; --coral:#e9775a;
+    --rose:#f3a6a0; --ink:#5b4636; --ink2:#8a7461; --line:#f0dcc9;
+    --good:#7fb685; --mid:#e9b872; --low:#e08b7d;
+    --shadow:0 10px 30px rgba(176,118,80,.14);
   }
-  .card { background:#fff; border-radius:18px; box-shadow:0 8px 30px rgba(0,0,0,.06); padding:40px 32px; max-width:420px; width:100%; text-align:center; }
-  .emoji { font-size:40px; margin-bottom:10px; }
-  h1 { font-size:22px; margin-bottom:14px; }
-  p { color:var(--muted); font-size:15px; }
-  a { display:inline-block; margin-top:20px; color:var(--accent); text-decoration:none; font-weight:600; }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:linear-gradient(160deg,#fdf6ef 0%,#fbeee2 45%,#fde3d6 100%);
+    color:var(--ink);min-height:100vh;line-height:1.7;
+  }
+  .app{max-width:560px;margin:0 auto;padding:26px 18px 60px;}
+  .hidden{display:none!important}
+
+  /* 开场 */
+  .hero{text-align:center;padding:30px 6px 8px;}
+  .hero .badge{display:inline-block;background:#fff3e8;border:1px solid var(--line);
+    color:var(--coral);font-size:13px;padding:5px 14px;border-radius:999px;margin-bottom:18px;letter-spacing:.5px}
+  .hero h1{font-size:27px;margin:6px 0 10px;color:var(--ink);font-weight:800;letter-spacing:.5px}
+  .hero p{color:var(--ink2);font-size:15px;margin:8px auto;max-width:420px}
+  .nameIn{margin:22px auto 6px;max-width:300px}
+  .nameIn input{width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:14px;
+    background:#fff;font-size:15px;color:var(--ink);text-align:center;outline:none;transition:.2s}
+  .nameIn input:focus{border-color:var(--peach);box-shadow:0 0 0 4px #ffe6d4}
+  .nameIn input::placeholder{color:#c9b6a4}
+
+  .btn{display:inline-block;border:none;cursor:pointer;font-family:inherit;
+    background:linear-gradient(135deg,var(--peach),var(--coral));color:#fff;
+    font-size:16px;font-weight:700;padding:14px 34px;border-radius:16px;
+    box-shadow:0 8px 20px rgba(224,119,90,.32);transition:.18s;letter-spacing:1px}
+  .btn:active{transform:translateY(2px) scale(.99)}
+  .btn.ghost{background:#fff;color:var(--coral);border:1.5px solid var(--line);box-shadow:none}
+  .center{text-align:center;margin-top:26px}
+
+  /* 进度 */
+  .prog{display:flex;align-items:center;gap:10px;margin:6px 2px 16px}
+  .prog .bar{flex:1;height:9px;background:#f3e2d2;border-radius:999px;overflow:hidden}
+  .prog .bar i{display:block;height:100%;width:0;border-radius:999px;
+    background:linear-gradient(90deg,var(--peach),var(--coral));transition:width .35s ease}
+  .prog .num{font-size:13px;color:var(--ink2);white-space:nowrap}
+
+  .qcard{background:var(--card);border:1px solid var(--line);border-radius:22px;
+    padding:24px 22px 22px;box-shadow:var(--shadow);animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .qdim{font-size:12.5px;color:var(--coral);font-weight:700;letter-spacing:1px;margin-bottom:8px}
+  .qtext{font-size:19px;font-weight:700;color:var(--ink);margin:0 0 4px;line-height:1.55}
+  .qhint{font-size:13.5px;color:var(--ink2);margin:4px 0 18px}
+  .opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);
+    border-radius:15px;padding:14px 16px;margin:10px 0;font-size:15px;color:var(--ink);
+    cursor:pointer;transition:.15s;font-family:inherit;line-height:1.45}
+  .opt:hover{border-color:var(--peach);background:#fff7f0;transform:translateX(2px)}
+  .opt:active{transform:scale(.99)}
+  .opt .lead{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;
+    border-radius:50%;background:var(--cream2);color:var(--coral);font-size:12px;font-weight:700;margin-right:10px;flex:none}
+  .optrow{display:flex;align-items:flex-start}
+  .qnav{display:flex;justify-content:space-between;margin-top:14px}
+  .back{background:none;border:none;color:var(--ink2);font-size:14px;cursor:pointer;padding:8px 4px;font-family:inherit}
+  .scaleWrap{display:flex;gap:8px;margin-top:6px}
+  .scaleWrap .s{flex:1;text-align:center;background:#fff;border:1.5px solid var(--line);
+    border-radius:13px;padding:14px 4px;cursor:pointer;font-size:14px;color:var(--ink2);transition:.15s;font-family:inherit}
+  .scaleWrap .s b{display:block;font-size:18px;color:var(--coral);margin-bottom:3px}
+  .scaleWrap .s:hover{border-color:var(--peach);background:#fff7f0}
+
+  /* 结果 */
+  .rbadge{text-align:center;margin:6px 0 18px}
+  .rtitle{font-size:24px;font-weight:800;color:var(--ink);margin:2px 0}
+  .rsub{font-size:14px;color:var(--ink2);margin:6px auto;max-width:430px}
+  .scoreRow{display:flex;gap:14px;margin:18px 0}
+  .scoreBox{flex:1;background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:18px 10px;text-align:center;box-shadow:var(--shadow)}
+  .scoreBox .lab{font-size:13px;color:var(--ink2);margin-bottom:6px}
+  .scoreBox .big{font-size:40px;font-weight:800;line-height:1;
+    background:linear-gradient(135deg,var(--peach-d),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .scoreBox .unit{font-size:16px;font-weight:700;color:var(--coral)}
+  .scoreBox.ideal .big{background:linear-gradient(135deg,#e9a06b,#d98c6a);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .scoreBox .tip{font-size:12px;color:var(--ink2);margin-top:6px}
+
+  .dim{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:12px 0;box-shadow:var(--shadow)}
+  .dim .dh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+  .dim .dh .nm{font-size:16px;font-weight:800;color:var(--ink)}
+  .dim .dh .gap{font-size:12.5px;color:var(--ink2)}
+  .track{height:11px;background:#f3e2d2;border-radius:999px;overflow:hidden;margin:7px 0 3px;position:relative}
+  .track i{display:block;height:100%;border-radius:999px;transition:width .6s ease}
+  .track.fit i{background:linear-gradient(90deg,var(--peach),var(--coral))}
+  .track.ideal{height:8px;background:#f3e2d2}
+  .track.ideal i{background:linear-gradient(90deg,#e7a877,#cf8a68)}
+  .tlab{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink2);margin-top:2px}
+  .dnote{font-size:13px;color:var(--ink2);margin:9px 0 0;line-height:1.55}
+  .tier{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:999px;margin-left:8px;vertical-align:middle}
+  .tier.hi{background:#e6f3e8;color:#5a9163}
+  .tier.mid{background:#fbf0d9;color:#b6863a}
+  .tier.lo{background:#fbe3df;color:#c0685a}
+
+  .concl{background:linear-gradient(135deg,#fff6ee,#fde9dd);border:1px solid var(--line);
+    border-radius:20px;padding:20px 20px;margin:18px 0;box-shadow:var(--shadow)}
+  .concl h3{margin:0 0 10px;font-size:17px;color:var(--coral)}
+  .concl p{font-size:14.5px;margin:8px 0;color:var(--ink)}
+  .concl .hl{color:var(--coral);font-weight:700}
+
+  .foot{text-align:center;color:#c4ad99;font-size:12px;margin-top:30px;line-height:1.6}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0}
+  .tags span{background:#fff3e8;border:1px solid var(--line);color:var(--coral);font-size:12px;padding:4px 11px;border-radius:999px}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="emoji">💗</div>
-  <h1>契合度测试</h1>
-  <p>测试内容准备中……<br>题目和选项定好后，就会放到这里。</p>
-  <a href="index.html">← 返回主页</a>
+<div class="app">
+
+  <!-- 开场 -->
+  <section id="intro" class="hero">
+    <span class="badge">✦ 一份温柔的契合小测试</span>
+    <h1>你和 TA 的契合度</h1>
+    <p>用最真实的第一反应作答，大约 3–5 分钟。<br>看看你和他、以及他心里那个理想型，之间隔着多远。</p>
+    <p style="font-size:13.5px;color:#b69a85">没有对错，只有「你是谁」。</p>
+    <div class="nameIn">
+      <input id="nameField" type="text" placeholder="怎么称呼你？（可选）" maxlength="12">
+    </div>
+    <div class="center">
+      <button class="btn" onclick="startTest()">开始测试 →</button>
+    </div>
+    <p style="font-size:12px;color:#bda890;margin-top:22px">本测试仅基于问答衡量匹配度，结论仅供参考与自省。</p>
+  </section>
+
+  <!-- 答题 -->
+  <section id="quiz" class="hidden">
+    <div class="prog">
+      <div class="bar"><i id="progBar"></i></div>
+      <div class="num" id="progNum">1 / 30</div>
+    </div>
+    <div class="qcard" id="qcard"></div>
+    <div class="qnav">
+      <button class="back" onclick="goBack()">← 上一题</button>
+      <span style="font-size:12.5px;color:#bda890;align-self:center" id="qcount"></span>
+    </div>
+  </section>
+
+  <!-- 结果 -->
+  <section id="result" class="hidden">
+    <div class="rbadge">
+      <div class="rtitle" id="rTitle">你们的契合画像</div>
+      <div class="rsub" id="rSub"></div>
+    </div>
+
+    <div class="scoreRow">
+      <div class="scoreBox">
+        <div class="lab">与他的契合度</div>
+        <div><span class="big" id="sFit">0</span><span class="unit">分</span></div>
+        <div class="tip">你和他的真实匹配</div>
+      </div>
+      <div class="scoreBox ideal">
+        <div class="lab">与理想型贴合度</div>
+        <div><span class="big" id="sIdeal">0</span><span class="unit">分</span></div>
+        <div class="tip">离他心里的她有多近</div>
+      </div>
+    </div>
+
+    <div id="dimList"></div>
+
+    <div class="concl" id="conclBox"></div>
+
+    <div class="tags" id="tagList"></div>
+
+    <div class="center">
+      <button class="btn ghost" onclick="restart()">↺ 再测一次</button>
+    </div>
+    <div class="foot">性格没有标准答案，契合度只是起点。<br>真正的距离，是两个人愿不愿意一起靠近。</div>
+  </section>
+
 </div>
+
+<script>
+/* ============ 题库：6 维度，共 28 题 ============
+   每个答案含 fit（与他的契合度 0-100）与 ideal（与理想型贴合度 0-100）
+*/
+const DIMS = {
+  logic:  {name:"逻辑与认知", note:"他最怕「笨」和纯感性，逻辑清晰是你的底牌。"},
+  emotion:{name:"情感与表达", note:"他冷面下有「抱你不说」的本能，需要你也愿意主动靠近。"},
+  indep:  {name:"独立与事业", note:"他要的是并肩的合伙人，而不是依附者。"},
+  vibe:   {name:"外形与气质", note:"大方、智性、有生命力，是他的审美开关。"},
+  values: {name:"价值观与门第", note:"门当户对、共担风险，是他安全感的来源。"},
+  spark:  {name:"同频与火花", note:"水火既济，需要你敢在他沉默时掀他的棋盘。"}
+};
+
+const Q = [
+  // ---- 逻辑与认知 ----
+  {d:"logic", t:"遇到一个复杂问题，你的第一反应通常是？", h:"凭直觉也行，选最像你的。",
+   o:[["拆解步骤、列清单逐步解决",75,80],["先找人讨论理清思路",95,90],["凭直觉先做了再说",50,55],["有点慌，等别人带",25,30],["下意识想逃避",10,15]]},
+  {d:"logic", t:"你对「纯文科」专业的态度？", h:"没有贬义，只是看你更偏哪边。",
+   o:[["尊重，但自己更偏理工/数据",85,95],["无所谓，看人",70,70],["喜欢文科，觉得感性更美",45,40],["有点排斥理科，觉得太冷",30,25],["逻辑类内容学不进去",15,15]]},
+  {d:"logic", t:"朋友遇到难题找你，你通常？", h:"",
+   o:[["帮 TA 理清逻辑、给方案",90,88],["先共情，再一起想",75,85],["陪着但不太会给建议",50,55],["不太会处理这类事",30,30]]},
+  {d:"logic", t:"你对自己「脑子转得快」有多自信？", h:"1=常跟不上，5=逻辑是我的强项。",
+   s:[["1 经常跟不上",15,20],["2",35,40],["3",55,55],["4",75,75],["5 逻辑是我的强项",92,90]]},
+  {d:"logic", t:"面对数据、表格、复盘，你的感觉？", h:"",
+   o:[["享受，觉得清晰",88,90],["还行，能看明白",70,70],["一般，需要人讲",45,45],["头大，尽量避开",25,25]]},
+
+  // ---- 情感与表达 ----
+  {d:"emotion", t:"和恋人有了矛盾，你倾向于？", h:"选你最舒服的那种。",
+   o:[["托住恋人情绪，然后沟通处理",95,95],["冷静后主动沟通",85,85],["直接说开，哪怕吵架",78,82],["等对方先开口",55,50],["回避，假装没事",15,15]]},
+  {d:"emotion", t:"你难过 / 崩溃时，最想要的是？", h:"这题很关键哦。",
+   o:[["有人默默抱住我",90,95],["有人听我倾诉",78,82],["自己一个人静静",55,58],["希望对方帮我分析",60,55],["不想被任何人看到",30,30]]},
+  {d:"emotion", t:"在关系里，你愿意主动表达爱意吗？", h:"",
+   o:[["很愿意，主动出击",88,90],["愿意，但需要一点引导",72,80],["看对方先",50,50],["不太会主动",35,35]]},
+  {d:"emotion", t:"你对「撒娇 / 示弱」的看法？", h:"",
+   o:[["是自然表达，不刻意",85,92],["偶尔会，但只在信任的人面前",80,85],["不太会，觉得别扭",55,50],["完全不会",40,38]]},
+  {d:"emotion", t:"你能接受两人各自有空间、不时刻黏着吗？", h:"1=必须黏着，5=各自精彩也很好。",
+   s:[["1 必须时刻黏着",15,18],["2",60,60],["3",78,78],["4",92,90],["5 各自精彩也很好",45,45]]},
+
+  // ---- 独立与事业 ----
+  {d:"indep", t:"你目前的工作 / 学业状态？", h:"真实就好。",
+   o:[["有稳定事业 / 目标清晰",90,92],["有工作但在迷茫期",65,65],["刚起步 / 待业中",45,45],["暂时没打算工作",25,25]]},
+  {d:"indep", t:"你对自己未来经济独立的态度？", h:"",
+   o:[["希望自己的收入能覆盖自己的需求",92,90],["顺其自然",55,55],["更希望对方承担",30,28]]},
+  {d:"indep", t:"你有自己的「野心 / 目标」吗（读博、创业、升职…）？", h:"",
+   o:[["有明确方向，且在推进",90,92],["有模糊方向",68,70],["暂时没有",45,45]]},
+  {d:"indep", t:"如果伴侣创业失败，你会？", h:"",
+   o:[["共同支撑",90,95],["默默陪伴",72,75],["有点慌但接受",55,55],["接受不了",25,25]]},
+  {d:"indep", t:"你做重大决定时，有多依赖别人？", h:"1=很依赖，5=完全自己做主。",
+   s:[["1 非常依赖他人",15,18],["2",35,38],["3",55,55],["4",75,75],["5 高度独立",92,90]]},
+
+  // ---- 外形与气质 ----
+  {d:"vibe", t:"你对自己外形的态度？", h:"没有标准，只有你的感受。",
+   o:[["自信大方，常打理",85,90],["还算满意，偶尔收拾",70,72],["一般，不太在意",50,50],["有点自卑",35,35]]},
+  {d:"vibe", t:"你保持运动 / 健身的习惯？", h:"",
+   o:[["常年健身，很自律",82,90],["偶尔运动",62,65],["几乎不运动",40,42]]},
+  {d:"vibe", t:"你觉得自己说话的方式？", h:"",
+   o:[["冷静的 leader",65,65],["我就正常说，没注意过",88,92],["谁还不是个甜妹了",65,65],["其实我不喜欢在人前多言",40,40]]},
+  {d:"vibe", t:"别人对你的整体气质评价常是？", h:"",
+   o:[["主心骨",88,92],["温和踏实",70,65],["安静内敛",55,52],["小鸟依人",45,40]]},
+
+  // ---- 价值观与门第 ----
+  {d:"values", t:"对「门当户对 / 家境相当」你怎么看？", h:"",
+   o:[["认可，背景和三观都重要",85,88],["无所谓，看人",65,65],["觉得不重要",45,45]]},
+  {d:"values", t:"关于买房 / 大额支出，你倾向？", h:"",
+   o:[["共同出资，写两人名字",90,95],["主要我出",75,78],["主要对方出",40,35],["没考虑过",45,45]]},
+  {d:"values", t:"你最看重的伴侣特质是？", h:"",
+   o:[["有想法、能并肩成长",92,92],["情绪稳定、靠谱",82,78],["对我好就行",55,50],["条件好 / 有钱",50,48]]},
+  {d:"values", t:"对「一起攒钱 / 做理财规划」的态度？", h:"",
+   o:[["喜欢，会一起做预算",85,90],["还行，听对方的",62,65],["不太管钱",40,40]]},
+  {d:"values", t:"你更看重两个人之间哪种「同频」？", h:"不用刻意，凭直觉选最像你的。",
+   o:[["聊得来，想法能接住彼此",88,92],["舒服就好，不必都懂",65,65],["各自圈子，互不干涉",45,45]]},
+
+  // ---- 同频与火花 ----
+  {d:"spark", t:"你更喜欢哪种约会？", h:"",
+   o:[["行业沙龙 / 展览 / 深度聊",85,90],["旅行 / 美食探索",70,68],["一起在家里各干各的事情",78,80],["热闹聚会蹦迪",35,38]]},
+  {d:"spark", t:"你怎么看两个人交流观点、偶尔较真？", h:"",
+   o:[["喜欢交流观点，但较真要适度，不爱吵架",90,88],["能聊观点，但不爱争输赢",72,72],["超爱辩论，吵赢了才有感觉",48,52],["不太喜欢争，各说各的就好",55,55]]},
+  {d:"spark", t:"你是「对外强势、对内柔软」的类型吗？", h:"",
+   o:[["是的，外面能扛事",85,95],["部分符合",68,70],["不太算",45,45]]},
+  {d:"spark", t:"你对「灵魂共鸣 / 同频」的看重程度？", h:"1=感觉对了就行，5=没有共鸣宁可单着。",
+   s:[["1 感觉对了就行",40,42],["2",55,55],["3",68,68],["4",82,82],["5 没有共鸣宁可单着",92,90]]}
+];
+
+/* ============ 状态 ============ */
+let idx = 0;
+let answers = new Array(Q.length).fill(null); // 存 {fit,ideal}
+let userName = "你";
+
+const $ = s=>document.querySelector(s);
+function show(id){["intro","quiz","result"].forEach(s=>$("#"+s).classList.add("hidden"));$("#"+id).classList.remove("hidden");}
+
+function startTest(){
+  const v = $("#nameField").value.trim();
+  if(v) userName = v;
+  idx = 0; answers = new Array(Q.length).fill(null);
+  show("quiz"); renderQ();
+}
+
+function renderQ(){
+  const q = Q[idx];
+  $("#progBar").style.width = (idx/Q.length*100)+"%";
+  $("#progNum").textContent = (idx+1)+" / "+Q.length;
+  $("#qcount").textContent = "第 "+(idx+1)+" 题";
+  let html = '<div class="qdim">'+DIMS[q.d].name+'</div>';
+  html += '<div class="qtext">'+q.t+'</div>';
+  if(q.h) html += '<div class="qhint">'+q.h+'</div>';
+  if(q.s){ // 1-5 评分
+    html += '<div class="scaleWrap">';
+    q.s.forEach((opt,i)=>{ html += '<div class="s" onclick="pick('+i+')"><b>'+(i+1)+'</b>'+opt[0]+'</div>'; });
+    html += '</div>';
+  }else{
+    q.o.forEach((opt,i)=>{ html += '<button class="opt" onclick="pick('+i+')"><span class="optrow"><span class="lead">'+"ABCDE"[i]+'</span><span>'+opt[0]+'</span></span></button>'; });
+  }
+  $("#qcard").innerHTML = html;
+  $("#qcard").style.animation="none"; void $("#qcard").offsetWidth; $("#qcard").style.animation="";
+}
+
+function pick(i){
+  const q = Q[idx];
+  const opt = q.s ? q.s[i] : q.o[i];
+  answers[idx] = {fit:opt[1], ideal:opt[2]};
+  if(idx < Q.length-1){ idx++; setTimeout(renderQ,120); }
+  else finish();
+}
+
+function goBack(){
+  if(idx>0){ idx--; renderQ(); }
+  else show("intro");
+}
+
+/* ============ 结果计算 ============ */
+function finish(){
+  // 每题按 [本题最低分, 本题最高分] 归一到 0-100：
+  // 每题权重完全相等（各 1/N），全选最高=100，全选最低=0
+  const norm = (q,v,k)=>{
+    const arr = q.s||q.o;
+    const vs = arr.map(o=>o[k]);
+    const mn = Math.min(...vs), mx = Math.max(...vs);
+    return mx>mn ? (v-mn)/(mx-mn)*100 : 100;
+  };
+  // 维度聚合
+  const dimFit={}, dimIdeal={}, dimN={};
+  Object.keys(DIMS).forEach(k=>{dimFit[k]=0;dimIdeal[k]=0;dimN[k]=0;});
+  let sumFit=0, sumIdeal=0, answered=0;
+  answers.forEach((a,i)=>{ if(!a) return; const d=Q[i].d;
+    const nf = norm(Q[i], a.fit, 1);
+    const ni = norm(Q[i], a.ideal, 2);
+    dimFit[d]+=nf; dimIdeal[d]+=ni; dimN[d]++;
+    sumFit+=nf; sumIdeal+=ni; answered++; });
+  Object.keys(DIMS).forEach(k=>{ if(dimN[k]){dimFit[k]=Math.round(dimFit[k]/dimN[k]); dimIdeal[k]=Math.round(dimIdeal[k]/dimN[k]);} });
+  const totalFit = Math.round(sumFit/answered);
+  const totalIdeal = Math.round(sumIdeal/answered);
+
+  show("result");
+  animateNum($("#sFit"), totalFit);
+  animateNum($("#sIdeal"), totalIdeal);
+
+  // 标题
+  let head, sub;
+  if(totalFit>=80){ head = userName+" 几乎就是他的理想同频"; sub="高契合。你踩中了他最看重的几乎每一格——逻辑、独立、还有那点敢掀棋盘的火。"; }
+  else if(totalFit>=65){ head = "合拍且可期"; sub="你们底子很好，再靠近一点火，就真的点燃了。下面几个维度可以再靠近。"; }
+  else if(totalFit>=50){ head = "有基础，可磨合"; sub="你们不是没有可能，只是有些维度需要彼此多走一步。"; }
+  else { head = "差距明显，但性格没有标准答案"; sub="这张试卷你答得不太贴他的模板——但模板之外，依然可以有真实的故事。"; }
+  $("#rTitle").textContent = head;
+  $("#rSub").textContent = sub;
+
+  // 维度卡
+  const order = ["logic","emotion","indep","vibe","values","spark"];
+  let dl = "";
+  order.forEach(k=>{
+    const f=dimFit[k], id=dimIdeal[k];
+    const gap = id - f;
+    const gapTxt = gap>=8 ? "（比理想型略低 "+gap+" 分）" : (gap<=-8 ? "（已超出理想型基准）" : "（与理想型基本持平）");
+    const tier = f>=75?'<span class="tier hi">高契合</span>':(f>=55?'<span class="tier mid">较合拍</span>':'<span class="tier lo">可磨合</span>');
+    const note = dimNote(k, f);
+    dl += '<div class="dim"><div class="dh"><span class="nm">'+DIMS[k].name+tier+'</span><span class="gap">差距分析 '+gapTxt+'</span></div>'
+        + '<div class="tlab"><span>与他的契合度</span><span>'+f+' 分</span></div>'
+        + '<div class="track fit"><i style="width:'+f+'%"></i></div>'
+        + '<div class="tlab"><span>与理想型贴合度</span><span>'+id+' 分</span></div>'
+        + '<div class="track ideal"><i style="width:'+id+'%"></i></div>'
+        + '<div class="dnote">'+note+'</div></div>';
+  });
+  $("#dimList").innerHTML = dl;
+
+  // 综合结论
+  const top = order.slice().sort((a,b)=>dimFit[b]-dimFit[a])[0];
+  const low = order.slice().sort((a,b)=>dimFit[a]-dimFit[b])[0];
+  const conclBox = $("#conclBox");
+  let c = '<h3>✦ 给你们的一封信</h3>';
+  c += '<p>'+userName+'，你在 <span class="hl">'+DIMS[top].name+'</span> 上和他最合拍——这是你们关系里最稳的那块地基。</p>';
+  if(dimFit[low] < 60){
+    c += '<p>而 <span class="hl">'+DIMS[low].name+'</span> 是你们目前最远的一段距离。'+dimNote(low,dimFit[low],true)+'</p>';
+  }else{
+    c += '<p>六个维度没有特别短的板，整体是均衡而温暖的。</p>';
+  }
+  c += '<p>他与理想型之间，从来不是「找一个下属」，而是找一个 <span class="hl">能并肩、也敢掀他棋盘的合伙人</span>。你离这张画像越近，他越容易放下那层理性的冰壳。</p>';
+  c += '<p style="color:#b69a85;font-size:13.5px">分数只是参考。真正决定距离的，是你们愿不愿意把「观察」换成「也让他看见你」。</p>';
+  conclBox.innerHTML = c;
+
+  // 标签
+  const tags=[];
+  if(totalFit>=80) tags.push("天作之合型");
+  else if(totalFit>=65) tags.push("高潜配对");
+  else if(totalFit>=50) tags.push("需要磨合");
+  else tags.push("反差吸引");
+  tags.push(DIMS[top].name+"最强");
+  if(dimFit["spark"]>=75) tags.push("同频火花足");
+  if(dimFit["indep"]>=75) tags.push("独立有底气");
+  if(dimFit["emotion"]>=75) tags.push("情感主动");
+  if(totalIdeal>=80) tags.push("贴近他的理想型");
+  $("#tagList").innerHTML = tags.map(t=>'<span>'+t+'</span>').join("");
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function dimNote(k, score, lowMode){
+  const hi = {
+    logic:["你逻辑在线，和他「拆解问题」的脑波能对上，吵架都能吵出方案感。","多展示你「理清思路」的一面，他会被「清晰」两个字击中。"],
+    emotion:["你愿意主动表达、不回避，正好接住他「抱你不说」的笨拙温柔。","试着在他沉默时先开口——他不是冷漠，是需要你的一句「你在怕什么」。"],
+    indep:["你有自己的战场和目标，这正是他想要的「并肩合伙人」。","在他面前展现你「自己能做主」的一面，独立感对他极有吸引力。"],
+    vibe:["大方、有生命力的气质，直接踩中他的审美点。","不必改变本质，偶尔的利落穿搭和自信状态会让他眼睛亮起来。"],
+    values:["门当户对、共担风险的共识，让你们的关系有扎实地基。","聊聊你对「共同规划」的看法，他安全感来自「我们一起扛」。"],
+    spark:["你能接住他的冷处理、也敢正面点火，这正是水火既济的关键。","别用回避回应他的沉默，正面一句「你到底怎么了」反而最让他心动。"]
+  };
+  const arr = hi[k];
+  if(lowMode) return arr[1];
+  return score>=70 ? arr[0] : arr[1];
+}
+
+function animateNum(el, target){
+  let cur=0; const step=Math.max(1,Math.round(target/28));
+  const t=setInterval(()=>{ cur+=step; if(cur>=target){cur=target;clearInterval(t);} el.textContent=cur; },18);
+}
+
+function restart(){
+  $("#nameField").value = userName==="你"?"":userName;
+  show("intro");
+}
+</script>
 </body>
 </html>
