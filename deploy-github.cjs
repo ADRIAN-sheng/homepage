@@ -61,6 +61,7 @@ const UPLOAD_FILES = [
   "css/style.css",
   "js/content.js",
   "js/app.js",
+  "契合度测试.html",
   "deploy-github.cjs",
   "server.cjs",
   "smoke-test.cjs",
