@@ -144,6 +144,8 @@ function runCase(contentSource, opts) {
   lovePanel.children.forEach(c => assert.ok(c._classes.has("card"), "解锁后子项是 card"));
   const loveBold = findAll(lovePanel, el => String(el.innerHTML || "").includes("<strong>"));
   assert.ok(loveBold.length >= 1, "相亲区加粗生效（含引用块）");
+  const loveLink = findAll(lovePanel, el => el.tagName === "a");
+  assert.ok(loveLink.length >= 1, "契合度测试链接存在");
 
   return { window, byId, store, allElements };
 }
